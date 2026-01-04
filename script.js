@@ -6,7 +6,6 @@ const workStartDate = new Date('1990-01-01T00:00:00').getTime();
 
 // Variabili globali
 let currentCalendarDate = new Date();
-let audioEnabled = true;
 
 // Array di citazioni motivazionali
 const quotes = [
@@ -153,11 +152,6 @@ function updateAchievements(daysRemaining) {
 
 // Funzione per celebrare un traguardo
 function celebrateAchievement(achievement) {
-    if (!audioEnabled) return;
-
-    // Suono celebrativo
-    playSound('achievement');
-
     // Notifica visiva
     showNotification(`🎉 Traguardo Sbloccato: ${achievement.title}!`);
 }
@@ -199,36 +193,6 @@ function showNotification(message) {
     }, 3000);
 }
 
-// Funzione per riprodurre suoni
-function playSound(type) {
-    if (!audioEnabled) return;
-
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    if (type === 'achievement') {
-        // Suono di successo
-        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.5);
-    } else if (type === 'tick') {
-        // Suono di tick per ogni secondo (opzionale)
-        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.05);
-    }
-}
-
 // Funzione per celebrare il pensionamento
 function celebrateRetirement() {
     document.querySelector('.title-big').textContent = 'PENSIONATO!';
@@ -248,10 +212,6 @@ function celebrateRetirement() {
 
     // Crea effetto confetti
     createConfetti();
-
-    if (audioEnabled) {
-        playSound('achievement');
-    }
 }
 
 // Funzione per creare effetto confetti
@@ -425,12 +385,12 @@ function initSettings() {
     const settingsToggle = document.getElementById('settingsToggle');
     const settingsContent = document.getElementById('settingsContent');
     const themeToggle = document.getElementById('themeToggle');
-    const audioToggle = document.getElementById('audioToggle');
 
     if (!settingsToggle || !settingsContent) return;
 
     // Toggle pannello impostazioni
-    settingsToggle.addEventListener('click', () => {
+    settingsToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
         settingsContent.classList.toggle('active');
     });
 
@@ -454,20 +414,6 @@ function initSettings() {
             const theme = themeToggle.checked ? 'light' : 'dark';
             document.body.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-        });
-    }
-
-    // Carica preferenza audio
-    audioEnabled = localStorage.getItem('audioEnabled') !== 'false';
-    if (audioToggle) {
-        audioToggle.checked = audioEnabled;
-    }
-
-    // Toggle audio
-    if (audioToggle) {
-        audioToggle.addEventListener('change', () => {
-            audioEnabled = audioToggle.checked;
-            localStorage.setItem('audioEnabled', audioEnabled);
         });
     }
 }
@@ -538,9 +484,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (title) {
         title.addEventListener('dblclick', () => {
             createConfetti();
-            if (audioEnabled) {
-                playSound('achievement');
-            }
         });
     }
 });
