@@ -487,3 +487,277 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// ============ STATISTICHE CARRIERA ============
+
+function calculateStatistics() {
+    // Data inizio lavoro: 1965 (anno nascita) + 17 anni = 1982
+    const workStart = new Date('1982-01-01');
+    const now = new Date();
+    const retirementDay = new Date('2028-12-31');
+
+    // Calcola anni di lavoro
+    const msPerYear = 365.25 * 24 * 60 * 60 * 1000;
+    const yearsWorked = (now - workStart) / msPerYear;
+    const totalYears = (retirementDay - workStart) / msPerYear;
+
+    // Statistiche base (stimabili con dati reali)
+    const stats = {
+        workHours: Math.floor(yearsWorked * 260 * 8), // 260 giorni lavorativi/anno, 8 ore/giorno
+        seaHours: Math.floor(yearsWorked * 4 * 5 * 12), // Stima 4 trasferte/anno, ~5 giorni ciascuna, 12h/giorno
+        countries: Math.floor(yearsWorked * 3.5), // Stima ~3-4 paesi/anno
+        nauticalMiles: Math.floor(yearsWorked * 8000), // Stima ridotta per trasferte brevi
+        flights: Math.floor(yearsWorked * 25), // Stima voli per trasferte
+        coffees: Math.floor(yearsWorked * 365 * 3), // 3 caffè al giorno
+        mondays: Math.floor(yearsWorked * 52), // 52 lunedì/anno
+        sunrises: Math.floor(yearsWorked * 4 * 3), // Trasferte: 4 trasferte/anno, ~3 albe per traferta
+        repairs: Math.floor(yearsWorked * 120), // Stima manutenzioni
+        storms: Math.floor(yearsWorked * 4 * 0.3), // 4 trasferte/anno, ~30% possibilità di maltempo
+        experience: Math.floor(totalYears)
+    };
+
+    return stats;
+}
+
+function animateStatNumber(element, targetValue, duration = 2000) {
+    const startValue = 0;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function (ease-out)
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const currentValue = Math.floor(startValue + (targetValue - startValue) * easeOut);
+
+        // Formatta il numero con separatori
+        element.textContent = currentValue.toLocaleString('it-IT');
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = targetValue.toLocaleString('it-IT');
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+function initStatistics() {
+    const stats = calculateStatistics();
+
+    // Anima tutti i numeri delle statistiche con delay
+    Object.keys(stats).forEach((key, index) => {
+        const element = document.querySelector(`[data-stat="${key}"]`);
+        if (element) {
+            setTimeout(() => {
+                animateStatNumber(element, stats[key], 2000);
+            }, index * 100); // Delay progressivo per effetto cascata
+        }
+    });
+}
+
+// ============ SCREENSAVER MODE ============
+
+function initScreensaver() {
+    const screensaverBtn = document.getElementById('screensaverBtn');
+    if (!screensaverBtn) return;
+
+    screensaverBtn.addEventListener('click', () => {
+        enterScreensaverMode();
+    });
+
+    // Esci dalla modalità screensaver con ESC o doppio click
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.body.classList.contains('screensaver-mode')) {
+            exitScreensaverMode();
+        }
+    });
+
+    document.addEventListener('dblclick', () => {
+        if (document.body.classList.contains('screensaver-mode')) {
+            exitScreensaverMode();
+        }
+    });
+}
+
+function enterScreensaverMode() {
+    // Aggiungi classe screensaver
+    document.body.classList.add('screensaver-mode');
+
+    // Richiedi fullscreen
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(err => {
+            console.log('Fullscreen non supportato:', err);
+        });
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+
+    // Chiudi pannello impostazioni
+    const settingsContent = document.getElementById('settingsContent');
+    if (settingsContent) {
+        settingsContent.classList.remove('active');
+    }
+}
+
+function exitScreensaverMode() {
+    // Rimuovi classe screensaver
+    document.body.classList.remove('screensaver-mode');
+
+    // Esci da fullscreen
+    if (document.exitFullscreen) {
+        document.exitFullscreen().catch(err => {
+            console.log('Exit fullscreen error:', err);
+        });
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+}
+
+// Gestisci anche l'uscita da fullscreen con il tasto F11 o browser
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        document.body.classList.remove('screensaver-mode');
+    }
+});
+
+// ============ AGGIORNA INIZIALIZZAZIONE ============
+
+// Aggiungi inizializzazione statistiche e screensaver
+document.addEventListener('DOMContentLoaded', () => {
+    // Inizializza statistiche
+    setTimeout(initStatistics, 500); // Piccolo delay per permettere il caricamento
+
+    // Inizializza screensaver
+    initScreensaver();
+
+    // Inizializza grafici
+    setTimeout(initCharts, 800); // Delay per animazione dopo statistiche
+});
+
+// ============ GRAFICI ============
+
+function initCharts() {
+    animateCircularChart();
+    animateTimelineChart();
+    animateDonutChart();
+}
+
+function animateCircularChart() {
+    const workStart = new Date('1982-01-01');
+    const now = new Date();
+    const retirementDay = new Date('2028-12-31');
+
+    const totalTime = retirementDay - workStart;
+    const elapsedTime = now - workStart;
+    const percentage = Math.min(100, Math.max(0, (elapsedTime / totalTime) * 100));
+
+    // SVG circle circumference: 2 * π * r = 2 * 3.14159 * 80 = 502.4
+    const circumference = 502.4;
+    const offset = circumference - (percentage / 100) * circumference;
+
+    const circle = document.getElementById('circleProgress');
+    const text = document.getElementById('circleText');
+
+    if (circle && text) {
+        // Anima il cerchio
+        setTimeout(() => {
+            circle.style.strokeDashoffset = offset;
+        }, 100);
+
+        // Anima il testo
+        animateNumber(0, percentage, 2000, (value) => {
+            text.textContent = Math.floor(value) + '%';
+        });
+    }
+}
+
+function animateTimelineChart() {
+    const workStart = new Date('1982-01-01');
+    const now = new Date();
+    const retirementDay = new Date('2028-12-31');
+
+    const msPerYear = 365.25 * 24 * 60 * 60 * 1000;
+    const yearsWorked = (now - workStart) / msPerYear;
+    const yearsRemaining = (retirementDay - now) / msPerYear;
+    const totalYears = yearsWorked + yearsRemaining;
+
+    const workedPercentage = (yearsWorked / totalYears) * 100;
+    const remainingPercentage = (yearsRemaining / totalYears) * 100;
+
+    const workedSegment = document.getElementById('timelineWorked');
+    const remainingSegment = document.getElementById('timelineRemaining');
+    const workedValue = document.getElementById('yearsWorkedValue');
+    const remainingValue = document.getElementById('yearsRemainingValue');
+
+    if (workedSegment && remainingSegment) {
+        setTimeout(() => {
+            workedSegment.style.width = workedPercentage + '%';
+            remainingSegment.style.width = remainingPercentage + '%';
+        }, 100);
+
+        // Anima i valori
+        animateNumber(0, yearsWorked, 1500, (value) => {
+            if (workedValue) workedValue.textContent = Math.floor(value);
+        });
+
+        animateNumber(0, yearsRemaining, 1500, (value) => {
+            if (remainingValue) remainingValue.textContent = Math.ceil(value);
+        });
+    }
+}
+
+function animateDonutChart() {
+    const seaPercentage = 60; // 60% in mare
+    const landPercentage = 40; // 40% a terra
+
+    const radius = 60;
+    const circumference = 2 * Math.PI * radius; // ~376.99
+
+    const seaLength = (seaPercentage / 100) * circumference;
+    const landLength = (landPercentage / 100) * circumference;
+
+    const seaSegment = document.getElementById('donutSea');
+    const landSegment = document.getElementById('donutLand');
+
+    if (seaSegment && landSegment) {
+        setTimeout(() => {
+            // Segmento mare (inizia da 0)
+            seaSegment.setAttribute('stroke-dasharray', `${seaLength} ${circumference}`);
+            seaSegment.setAttribute('stroke-dashoffset', '0');
+
+            // Segmento terra (inizia dove finisce il mare)
+            landSegment.setAttribute('stroke-dasharray', `${landLength} ${circumference}`);
+            landSegment.setAttribute('stroke-dashoffset', -seaLength);
+        }, 100);
+    }
+}
+
+function animateNumber(start, end, duration, callback) {
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const currentValue = start + (end - start) * easeOut;
+
+        callback(currentValue);
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            callback(end);
+        }
+    }
+
+    requestAnimationFrame(update);
+}

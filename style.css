@@ -726,6 +726,443 @@ body[data-theme="light"] .calendar-day.other-month {
     color: rgba(26, 26, 46, 0.3);
 }
 
+/* Screensaver Button */
+.screensaver-btn {
+    width: 100%;
+    padding: 12px 20px;
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.screensaver-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.screensaver-icon {
+    font-size: 1.3rem;
+}
+
+/* Screensaver Mode (Fullscreen) */
+body.screensaver-mode {
+    background: var(--bg-dark);
+}
+
+body.screensaver-mode .settings-panel,
+body.screensaver-mode .achievements-section,
+body.screensaver-mode .retirement-date,
+body.screensaver-mode .progress-section,
+body.screensaver-mode .statistics-section,
+body.screensaver-mode .calendar-section,
+body.screensaver-mode .motivation-section,
+body.screensaver-mode .footer {
+    display: none !important;
+}
+
+body.screensaver-mode .header {
+    margin-bottom: 80px;
+}
+
+body.screensaver-mode .countdown-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+body.screensaver-mode .countdown-card {
+    padding: 50px 30px;
+}
+
+body.screensaver-mode .number {
+    font-size: clamp(5rem, 12vw, 8rem);
+}
+
+body.screensaver-mode .label {
+    font-size: 1.5rem;
+}
+
+/* Statistics Section */
+.statistics-section {
+    margin-bottom: 60px;
+    animation: fadeInUp 1s ease-out 0.7s backwards;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius);
+    padding: 30px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-gradient);
+    transform: scaleX(0);
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-detail {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Light Theme Stats */
+body[data-theme="light"] .stat-card {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme="light"] .stat-label {
+    color: #1a1a2e;
+}
+
+body[data-theme="light"] .stat-detail {
+    color: rgba(26, 26, 46, 0.5);
+}
+
+/* Charts Section */
+.charts-section {
+    margin-bottom: 60px;
+    animation: fadeInUp 1s ease-out 0.75s backwards;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.chart-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.chart-card.wide {
+    grid-column: span 2;
+}
+
+.chart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.chart-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Circular Progress Chart */
+.circular-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.circular-chart {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    transform: rotate(-90deg);
+}
+
+.circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 12;
+}
+
+.circle-progress {
+    fill: none;
+    stroke: url(#gradient);
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 502.4;
+    stroke-dashoffset: 502.4;
+    transition: stroke-dashoffset 2s ease-out;
+}
+
+.circle-text {
+    fill: var(--text-primary);
+    font-size: 28px;
+    font-weight: 800;
+    transform: rotate(90deg);
+    transform-origin: center;
+}
+
+/* Timeline Bar Chart */
+.timeline-chart {
+    width: 100%;
+}
+
+.timeline-bar-container {
+    display: flex;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-segment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    transition: all 1.5s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-segment::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.timeline-segment.worked {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    width: 0%;
+}
+
+.timeline-segment.remaining {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 100%;
+}
+
+.timeline-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.timeline-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+}
+
+.timeline-years {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.current-year {
+    color: var(--text-primary);
+    font-weight: 700;
+    padding: 5px 15px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Donut Chart */
+.donut-chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    height: 250px;
+    margin: 0 auto;
+}
+
+.donut-chart {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.donut-segment {
+    fill: none;
+    stroke-width: 30;
+    transition: stroke-dasharray 2s ease-out;
+}
+
+.donut-segment.sea {
+    stroke: #38f9d7;
+}
+
+.donut-segment.land {
+    stroke: #764ba2;
+}
+
+.donut-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.donut-icon {
+    font-size: 3rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Chart Legend */
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.legend-item-chart {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-dot.completed {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+}
+
+.legend-dot.remaining {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.legend-dot.sea {
+    background: #38f9d7;
+}
+
+.legend-dot.land {
+    background: #764ba2;
+}
+
+/* Light Theme Charts */
+body[data-theme="light"] .chart-card {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme="light"] .chart-title {
+    color: #1a1a2e;
+}
+
+body[data-theme="light"] .circle-bg {
+    stroke: rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme="light"] .circle-text {
+    fill: #1a1a2e;
+}
+
+body[data-theme="light"] .timeline-years,
+body[data-theme="light"] .legend-item-chart {
+    color: rgba(26, 26, 46, 0.7);
+}
+
+body[data-theme="light"] .current-year {
+    color: #1a1a2e;
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
 /* Section Title */
 .section-title {
     text-align: center;
@@ -1024,6 +1461,39 @@ body[data-theme="light"] .calendar-day.other-month {
     .calendar-legend {
         font-size: 0.8rem;
     }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 25px 15px;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card.wide {
+        grid-column: span 1;
+    }
+
+    .timeline-bar-container {
+        height: 100px;
+    }
+
+    .timeline-label {
+        font-size: 0.75rem;
+    }
+
+    .timeline-value {
+        font-size: 1.3rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1038,5 +1508,30 @@ body[data-theme="light"] .calendar-day.other-month {
     .calendar-day-header {
         font-size: 0.7rem;
         padding: 5px 2px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .chart-title {
+        font-size: 1.1rem;
+    }
+
+    .timeline-years {
+        font-size: 0.85rem;
+    }
+
+    .current-year {
+        padding: 4px 10px;
+        font-size: 0.85rem;
     }
 }
