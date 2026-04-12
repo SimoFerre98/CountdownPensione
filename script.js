@@ -1,5 +1,5 @@
-// Data di pensionamento: 31 Dicembre 2028 alle 23:59:59
-const retirementDate = new Date('2028-12-31T23:59:59').getTime();
+// Data di pensionamento: 1 Aprile 2029 alle 23:59:59
+const retirementDate = new Date('2029-04-01T23:59:59').getTime();
 
 // Data di inizio lavoro (stimata - puoi modificarla)
 const workStartDate = new Date('1990-01-01T00:00:00').getTime();
@@ -321,7 +321,7 @@ function renderCalendar(date = currentCalendarDate) {
     // Giorni del mese corrente
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const today = new Date();
-    const retirementDay = new Date(2028, 11, 31); // 31 Dicembre 2028
+    const retirementDay = new Date(2029, 3, 1); // 1 Aprile 2029
 
     // Calcola giorni milestone (esempio: ogni 100 giorni)
     const milestoneDays = calculateMilestoneDays();
@@ -364,7 +364,7 @@ function renderCalendar(date = currentCalendarDate) {
 function calculateMilestoneDays() {
     const milestones = [];
     const today = new Date();
-    const retirement = new Date(2028, 11, 31);
+    const retirement = new Date(2029, 3, 1);
 
     // Aggiungi milestone specifici dei traguardi
     achievements.forEach(achievement => {
@@ -494,7 +494,7 @@ function calculateStatistics() {
     // Data inizio lavoro: 1965 (anno nascita) + 17 anni = 1982
     const workStart = new Date('1982-01-01');
     const now = new Date();
-    const retirementDay = new Date('2028-12-31');
+    const retirementDay = new Date('2029-04-01');
 
     // Calcola anni di lavoro
     const msPerYear = 365.25 * 24 * 60 * 60 * 1000;
@@ -653,7 +653,7 @@ function initCharts() {
 function animateCircularChart() {
     const workStart = new Date('1982-01-01');
     const now = new Date();
-    const retirementDay = new Date('2028-12-31');
+    const retirementDay = new Date('2029-04-01');
 
     const totalTime = retirementDay - workStart;
     const elapsedTime = now - workStart;
@@ -682,7 +682,7 @@ function animateCircularChart() {
 function animateTimelineChart() {
     const workStart = new Date('1982-01-01');
     const now = new Date();
-    const retirementDay = new Date('2028-12-31');
+    const retirementDay = new Date('2029-04-01');
 
     const msPerYear = 365.25 * 24 * 60 * 60 * 1000;
     const yearsWorked = (now - workStart) / msPerYear;
