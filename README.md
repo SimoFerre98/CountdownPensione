@@ -101,7 +101,7 @@ Un bellissimo sito web con countdown personalizzato per celebrare il pensionamen
 ### Cambiare la data di pensionamento
 Nel file `script.js`, modifica la linea 2:
 ```javascript
-const retirementDate = new Date('2028-12-31T23:59:59').getTime();
+const retirementDate = new Date('2029-04-01T23:59:59').getTime();
 ```
 
 ### Cambiare la data di inizio lavoro (per la barra di progresso)
